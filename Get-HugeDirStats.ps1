@@ -19,4 +19,4 @@
 
 #example
 #$stats = Get-HugeDirStats c:\windows
-$stats = Get-HugeDirStats C:\Users\ak045346\Documents\CWx
+$stats = Get-HugeDirStats C:\Users\targetedDrive
