@@ -3,30 +3,24 @@
     Retrieves service status information from remote computers, and lets you decide what to do using multiple options.
 
 .DESCRIPTION
-    The DM-Prod-Migrations script has multiple switch functions which uses Windows Management Instrumentation (WMI) to retrieve service information, from TARGETED remote computer. 
+    This script has multiple functions which uses Windows Management Instrumentation (WMI) to retrieve service information, from TARGETED remote computer. 
     Computer names or IP addresses are expected as SWITCH CASE input.
     Each computer is contacted sequentially, not in parallel.
 
 .NOTES  
-    File Name  : DM_Prod_Migration.ps1  
-    Author     : Amit Kumar amit.kumar@cerner.com
+    File Name  : mountSpaceQuery.ps1  
+    Author     : Amit Kumar 
     Requires   : PowerShell V2 and above
     
 .PARAMETER
-    a single computer name and client hhrr. You may also provide IP addresses.
+    a single computer name or multiple servers. You may also provide IP addresses.
         
 .EXAMPLE
-    Choose an option to proceed and provide computer name and client hhrr as params and retrieve their service information
+    Choose an option to proceed and provide computer name as params and retrieve their service information
     
-    DM-Prod-Migrations.ps1
+    mountSpaceQuery.ps1
 
-PS C:\WINDOWS\system32> C:\Users\ak045346\Documents\CWx\scriptlets\DM_Prod_Migration.ps1
-1. disable & stop service 
-2. enable & start service 
-3. query server'r service 
-4. make it manual stopped - server's service 
-5. Quit
-Chose a number to continue: 
+PS C:\WINDOWS\system32> \\fakepath\scriptlets\mountSpaceQuery.ps1
     
 .LINK  
 .NOTES
