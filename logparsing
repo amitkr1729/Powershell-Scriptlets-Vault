@@ -1,0 +1,48 @@
+# Python 3
+
+import pandas as pd
+from datetime import datetime
+
+# Helper function to parse log lines
+def parse_log_line(line):
+    # Assuming log format: "YYYY-MM-DD HH:MM:SS success" or "YYYY-MM-DD HH:MM:SS error"
+    parts = line.strip().split(' ')
+    timestamp_str, status = ' '.join(parts[:2]), parts[2].lower()
+    timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
+    return timestamp, status
+
+# Read log file and parse
+def read_logs(file_path):
+    timestamps = []
+    statuses = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            if line.strip():  # Skip empty lines
+                ts, st = parse_log_line(line)
+                timestamps.append(ts)
+                statuses.append(st)
+    return pd.DataFrame({'timestamp': timestamps, 'status': statuses})
+
+# Group by 5-minute intervals and calculate failure percentage
+def compute_failure_percentage(df):
+    # Set timestamp as index
+    df = df.set_index('timestamp')
+    # Resample into 5-minute windows
+    grouped = df.resample('5T').status.value_counts().unstack(fill_value=0)
+    
+    # Ensure both columns exist
+    if 'error' not in grouped.columns:
+        grouped['error'] = 0
+    if 'success' not in grouped.columns:
+        grouped['success'] = 0
+    
+    # Calculate failure percentage
+    grouped['failure_percentage'] = (grouped['error'] / (grouped['success'] + grouped['error'])) * 100
+    return grouped[['success', 'error', 'failure_percentage']]
+
+# Example usage:
+if __name__ == "__main__":
+    log_file = 'example.log'  # Replace with your log file path
+    df_logs = read_logs(log_file)
+    results = compute_failure_percentage(df_logs)
+    print(results)
